@@ -3,6 +3,17 @@
   import { Plus, GripVertical } from "lucide-svelte";
   import { goto } from "$app/navigation";
 
+  // Override crypto.randomUUID for non HTTPS dev scenario
+  if (typeof window !== 'undefined' && !window.crypto.randomUUID) {
+    console.warn("Secure context not detected. Polyfilling crypto.randomUUID for development.");
+    
+    window.crypto.randomUUID = function() {
+      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      );
+    };
+  }
+
   let { data, invoice = null, formId = "invoice-editor-form" } = $props();
   let initInvoice = untrack(() => invoice);
   let t = getContext("i18n") as (key: string) => string;
@@ -35,6 +46,9 @@
   let customers = $derived(data.customers || []);
   let products = $derived(data.products || []);
   let taxDefinitions = $derived(data.taxDefinitions || []);
+
+  function addProduct() {
+  }
 
   function addItem() {
     items.push({ id: crypto.randomUUID(), description: "", quantity: 1, unitPrice: 0, taxPercent: 0, notes: "" });
@@ -147,12 +161,80 @@
     }
   }
 
+  let productModal;
+
+  function addProductModal() {
+    productModal.showModal();
+  }
+
+  function fmtMoney(cur: string | undefined, n: number) {
+    if (!cur) cur = "USD";
+    try {
+      const locale = numberFormat === "period" ? "de-DE" : "en-US";
+      return new Intl.NumberFormat(locale, { style: "currency", currency: cur }).format(n || 0);
+    } catch {
+      return `${cur} ${Number(n || 0).toFixed(2)}`;
+    }
+  }
+
   onMount(() => {
     //
   });
 </script>
 
 <svelte:window onkeydown={handleKeydown} />
+
+<dialog bind:this={productModal} class="modal">
+  <div class="modal-box w-11/12 max-w-2xl">
+    <h3 class="text-lg font-bold mb-4">{t("Select product")}</h3>
+    <div class="hidden md:block overflow-x-auto rounded-box bg-base-100 border border-base-300">
+      <table class="table table-zebra w-full text-sm">
+        <thead class="bg-base-200 text-base-content">
+          <tr class="font-medium">
+            <th>{t("Name")}</th>
+            <th>{t("Description")}</th>
+            <th class="w-24 text-right pr-4">{t("Price")}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {#each products as p}
+            <tr class="hover">
+              <td class="max-w-[12rem] truncate">{p.name || p.id}</td>
+              <td class="opacity-70 max-w-[20rem] truncate">{p.description || ""}</td>
+              <td class="text-right pr-4 font-medium">{fmtMoney(p.currency, p.price)}</td>
+              <td class="text-right pr-4 font-medium">
+                <button type="button" class="btn btn-ghost btn-sm shrink-0" onclick={addProduct}>
+                  <Plus size={16} />
+                  <span class="ml-2">{t("Add Product")}</span>
+                </button>
+              </td>
+            </tr>
+          {/each}
+          {#if products.length === 0}
+            <tr>
+              <td colspan="3" class="text-center py-10 text-sm opacity-70">
+                <span>
+                  {t("No products yet.")}
+                </span>
+              </td>
+            </tr>
+          {/if}
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn">Close</button>
+      </form>
+    </div>
+  </div>
+  
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
 
 <form id={formId} onsubmit={handleSubmit} class="space-y-6">
   {#if error}
@@ -254,8 +336,15 @@
           <button type="button" class="btn btn-ghost btn-sm btn-square shrink-0 cursor-move opacity-40 hover:opacity-100" tabindex="-1">
             <GripVertical size={16} />
           </button>
+
+          <button type="button" class="btn btn-ghost btn-sm shrink-0" onclick={addProductModal}>
+            <Plus size={16} />
+            <span class="ml-2">{t("Add Product")}</span>
+          </button>
+          <div class="form-control w-full">
+            <input class="input input-bordered w-full min-w-10" bind:value={item.description} placeholder={t("Description")} required />
+          </div>
           
-          <input class="input input-bordered w-full min-w-0" bind:value={item.description} placeholder={t("Description")} required />
           <input type="number" min="0" step="1" class="input input-bordered w-16 sm:w-20 shrink-0 text-center" bind:value={item.quantity} />
           <input type="number" min="0" step="any" class="input input-bordered w-24 shrink-0 text-center" bind:value={item.unitPrice} />
           {#if form.taxMode === "line"}
