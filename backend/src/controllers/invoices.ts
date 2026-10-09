@@ -806,6 +806,11 @@ export const updateInvoice = async (
   if (!existing) return null;
 
   const db = getDatabase();
+  // existing.status may be the derived "overdue"; persist the stored status
+  // instead so it isn't frozen into the database.
+  const storedStatus = ((db.query("SELECT status FROM invoices WHERE id = ?", [
+    id,
+  ]) as unknown[][])[0]?.[0] ?? existing.status) as Invoice["status"];
 
   // Immutability: prevent structural changes once sent/paid
   // Voided invoices are completely locked — only deletion is allowed
@@ -948,7 +953,7 @@ export const updateInvoice = async (
             ? new Date(data.dueDate)
             : existing.dueDate,
         data.currency ?? existing.currency,
-        data.status ?? existing.status,
+        data.status ?? storedStatus,
         totals.subtotal,
         totals.discountAmount,
         data.discountPercentage ?? existing.discountPercentage,
