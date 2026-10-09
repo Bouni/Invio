@@ -1461,12 +1461,9 @@ function applyDerivedOverdue<
   T extends { status: Invoice["status"]; dueDate?: Date },
 >(inv: T): T {
   if (!inv) return inv;
-  if (
-    inv.status === "paid" ||
-    inv.status === "voided" ||
-    inv.status === "complete"
-  )
-    return inv;
+  // Only sent invoices can become overdue; drafts were never issued and
+  // paid/voided/complete invoices are settled.
+  if (inv.status !== "sent") return inv;
   if (!inv.dueDate) return inv;
   const today = new Date();
   const dd = new Date(
