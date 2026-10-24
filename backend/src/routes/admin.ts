@@ -65,6 +65,7 @@ import {
   updateCategory,
   updateUnit,
 } from "../controllers/productOptions.ts";
+import { getStatistics } from "../controllers/statistics.ts";
 import { buildInvoiceHTML, generatePDF } from "../utils/pdf.ts";
 import { isEmailConfigured, sendEmail } from "../utils/email.ts";
 import { generateUBLInvoiceXML } from "../utils/ubl.ts"; // legacy direct import
@@ -279,6 +280,8 @@ adminRoutes.use("/product-units/*", requireAdminAuth);
 
 adminRoutes.use("/settings", requireAdminAuth);
 
+adminRoutes.use("/statistics", requireAdminAuth);
+
 adminRoutes.use("/settings/*", requireAdminAuth);
 
 // Protect admin alias routes as well
@@ -360,6 +363,23 @@ adminRoutes.get("/invoices", requirePermission("invoices", "read"), (c) => {
   });
   return c.json(list);
 });
+
+// Sales statistics for a calendar year (?year=YYYY) or all time (?year=all)
+adminRoutes.get(
+  "/statistics",
+  requirePermission("invoices", "read"),
+  (c) => {
+    const raw = c.req.query("year");
+    let year: number | null = new Date().getFullYear();
+    if (raw === "all") year = null;
+    else if (raw && /^\d{4}$/.test(raw)) year = Number(raw);
+    try {
+      return c.json(getStatistics(year));
+    } catch (e) {
+      return c.json({ error: String(e) }, 500);
+    }
+  },
+);
 
 adminRoutes.get("/invoices/:id", requirePermission("invoices", "read"), (c) => {
   const id = c.req.param("id");

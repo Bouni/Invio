@@ -9,6 +9,7 @@
     "npm:@tailwindcss/postcss@^4.1.7": "4.1.12",
     "npm:cssnano@^7.0.7": "7.1.1_postcss@8.5.6",
     "npm:daisyui@^5.0.54": "5.0.54",
+    "npm:nodemailer@*": "8.0.9",
     "npm:otpauth@^9.4.1": "9.5.1",
     "npm:pdf-lib@^1.17.1": "1.17.1",
     "npm:postcss@^8.5.3": "8.5.6",
@@ -526,6 +527,9 @@
     },
     "node-releases@2.0.19": {
       "integrity": "sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw=="
+    },
+    "nodemailer@8.0.9": {
+      "integrity": "sha512-5ofa7BUN8+C+Hckh5V2GjeeOGRQBx0CJQA6KxrvuZfC8iU4/q7sLn8XrtEEhJkjV6HdyIiQs7Bba6bTao8JhkA=="
     },
     "nth-check@2.1.1": {
       "integrity": "sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==",

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from "$app/state";
   import "@fontsource-variable/inter/wght.css";
-  import { LayoutDashboard, LogOut, Ellipsis, Package, ReceiptText, Settings, UserCog, Users } from "lucide-svelte";
+  import { ChartColumn, LayoutDashboard, LogOut, Ellipsis, Package, ReceiptText, Settings, UserCog, Users } from "lucide-svelte";
   import Breadcrumbs from "$lib/components/Breadcrumbs.svelte";
   import "./layout.css";
   import DemoAlert from "$lib/components/DemoAlert.svelte";
@@ -110,6 +110,14 @@
                     {t("More")}
                   </summary>
                   <ul class="bg-base-100 rounded-box z-20 w-52 p-2">
+                    {#if canViewInvoices}
+                      <li>
+                        <a href="/statistics">
+                          <ChartColumn size={16} />
+                          {t("Statistics")}
+                        </a>
+                      </li>
+                    {/if}
                     {#if canViewProducts}
                       <li>
                         <a href="/products">
@@ -180,6 +188,14 @@
                     <a href="/customers">
                       <Users size={16} />
                       {t("Customers")}
+                    </a>
+                  </li>
+                {/if}
+                {#if canViewInvoices}
+                  <li>
+                    <a href="/statistics">
+                      <ChartColumn size={16} />
+                      {t("Statistics")}
                     </a>
                   </li>
                 {/if}
