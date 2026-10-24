@@ -14,18 +14,13 @@
 
 ------
 
-## 🌟 Why Invio?
+Invio aims to be a lighweight invoicing app for freelancers and small businesses alike. The goal of Invio is not to have every feature imaginable nor does it aim to be suitable for every company size. But maybe its right for you. If you want slim easy to learn invoicing software that still can, generate invoice law compliant¹ for supported countries.
 
-- Zero Bloat - Create an invoice, share a link, get paid. No menus to dig through, no setup wizards, no fluff.
-- Fully Selfhosted - Your data, stays your data. Host it on your own hardware and never worry about what happens when a SaaS company changes its pricing or shuts down.
-- Client Friendly - Skip the 'how do I log in?' emails. Just send a secure link, no account needed.
-- Free. Forever. - No subscription, no per-invoice charges, no hidden fees. Invio is fully free and open source. Good tools shouldn't cost a fortune.
-
-## 🚀 Quick Start
+## Quick Start
 
 Check out the [Quick Start guide](https://github.com/kittendevv/Invio/wiki/Quick-Start) in the documentation to get up and running.
 
-## 🖼️ Screenshots
+## Screenshots
 
 <details>
 <summary>Dashboard</summary>
@@ -55,24 +50,15 @@ Check out the [Quick Start guide](https://github.com/kittendevv/Invio/wiki/Quick
   
 </details>
 
-## 💖 Contributors
-
-Invio is made possible by your contributions!
+## Contributors
 
 <a href="https://github.com/kittendevv/Invio/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=kittendevv/Invio" />
 </a>
 
-## 🤝 Contributing
-
-- Found a bug or have an idea? Open an issue.
-- Want to add a feature or fix something? Fork and submit a PR.
-- All experience levels welcome!
-
-## ☕ Support me
+##  Support me
 
 If you like Invio and want to support development:
 - Buy me a coffee: https://ko-fi.com/codingkitten
 
----
-Made with 💖 by <a href="https://github.com/kittendevv">kittendevv</a> and contributors - if you find this useful, please ⭐️ the repo!
+¹ Invio doesn't guarantee to be invoice law compliant so using it is at you own risk.
