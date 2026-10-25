@@ -4,7 +4,7 @@
 <p align="center"><b>Self-hosted invoicing without the bloat.</b></p>
 <p align="center">
   <a href="https://invio.dev">Website</a> •
-  <a href="https://demo.invio.dev">Live Demo</a> •
+  <a href="https://demo.invio.codingkitten.dev">Live Demo</a> •
   <a href="https://github.com/kittendevv/Invio/wiki">Documentation</a> •
   <a href="https://ko-fi.com/codingkitten">Support</a>
 </p>
