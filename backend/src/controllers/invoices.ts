@@ -5,6 +5,8 @@ import {
   getNextInvoiceNumber,
 } from "../database/init.ts";
 import { getSetting } from "./settings.ts";
+import { getProductById } from "./products.ts";
+import { normalizeInvoiceLocaleSetting } from "../i18n/translations.ts";
 import {
   CreateInvoiceRequest,
   Invoice,
@@ -228,6 +230,36 @@ export function getLatestPaidPaymentMethods(
   return result;
 }
 
+type ProductSnapshot = Pick<
+  InvoiceItem,
+  "hsCode" | "countryOfOrigin" | "lengthMm" | "widthMm" | "heightMm" | "weightG"
+>;
+
+/** Current shipping/customs values of the item's product, copied onto the item when it is saved. */
+const snapshotProduct = (productId?: string): ProductSnapshot => {
+  const p = productId ? getProductById(productId) : null;
+  return {
+    hsCode: p?.hsCode ?? null,
+    countryOfOrigin: p?.countryOfOrigin ?? null,
+    lengthMm: p?.lengthMm ?? null,
+    widthMm: p?.widthMm ?? null,
+    heightMm: p?.heightMm ?? null,
+    weightG: p?.weightG ?? null,
+  };
+};
+
+const snapshotParams = (s: ProductSnapshot) => [
+  s.hsCode,
+  s.countryOfOrigin,
+  s.lengthMm,
+  s.widthMm,
+  s.heightMm,
+  s.weightG,
+];
+
+const toNullableNumber = (v: unknown): number | null =>
+  v === null || v === undefined ? null : Number(v);
+
 export const createInvoice = (
   data: CreateInvoiceRequest,
 ): InvoiceWithDetails => {
@@ -324,6 +356,7 @@ export const createInvoice = (
 
   const pricesIncludeTax = data.pricesIncludeTax ?? defaultPricesIncludeTax;
   const roundingMode = data.roundingMode || defaultRoundingMode;
+  const locale = normalizeInvoiceLocaleSetting(data.locale);
 
   const invoice: Invoice = {
     id: invoiceId,
@@ -344,6 +377,7 @@ export const createInvoice = (
 
     pricesIncludeTax,
     roundingMode,
+    locale,
 
     // Payment and notes
     paymentTerms,
@@ -361,8 +395,8 @@ export const createInvoice = (
       id, invoice_number, customer_id, issue_date, due_date, currency, status,
       subtotal, discount_amount, discount_percentage, tax_rate, tax_amount, total,
       payment_terms, notes, share_token, created_at, updated_at,
-      prices_include_tax, rounding_mode
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      prices_include_tax, rounding_mode, locale
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       invoice.id,
       invoice.invoiceNumber,
@@ -384,6 +418,7 @@ export const createInvoice = (
       invoice.updatedAt,
       pricesIncludeTax ? 1 : 0,
       roundingMode,
+      locale ?? null,
     ],
   );
   recordStatusChange(db, invoiceId, invoice.status || "draft");
@@ -395,6 +430,7 @@ export const createInvoice = (
     const itemId = generateUUID();
     const lineTotal = item.quantity * item.unitPrice;
     const unit = typeof item.unit === "string" ? item.unit.trim() : "";
+    const snapshot = snapshotProduct(item.productId);
 
     const invoiceItem: InvoiceItem = {
       id: itemId,
@@ -407,12 +443,14 @@ export const createInvoice = (
       lineTotal,
       notes: item.notes,
       sortOrder: i,
+      ...snapshot,
     };
 
     db.query(
       `INSERT INTO invoice_items (
-        id, invoice_id, product_id, description, quantity, unit, unit_price, line_total, notes, sort_order
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        id, invoice_id, product_id, description, quantity, unit, unit_price, line_total, notes, sort_order,
+        hs_code, country_of_origin, length_mm, width_mm, height_mm, weight_g
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         itemId,
         invoiceId,
@@ -424,6 +462,7 @@ export const createInvoice = (
         lineTotal,
         item.notes,
         i,
+        ...snapshotParams(snapshot),
       ],
     );
 
@@ -533,7 +572,7 @@ export const getInvoices = (): Invoice[] => {
     SELECT id, invoice_number, customer_id, issue_date, due_date, currency, status,
            subtotal, discount_amount, discount_percentage, tax_rate, tax_amount, total,
            payment_terms, notes, share_token, created_at, updated_at,
-           prices_include_tax, rounding_mode
+           prices_include_tax, rounding_mode, locale
     FROM invoices
     ORDER BY created_at DESC
   `);
@@ -548,7 +587,7 @@ export const getInvoiceById = (id: string): InvoiceWithDetails | null => {
     SELECT id, invoice_number, customer_id, issue_date, due_date, currency, status,
            subtotal, discount_amount, discount_percentage, tax_rate, tax_amount, total,
            payment_terms, notes, share_token, created_at, updated_at,
-           prices_include_tax, rounding_mode
+           prices_include_tax, rounding_mode, locale
     FROM invoices
     WHERE id = ?
   `,
@@ -567,7 +606,8 @@ export const getInvoiceById = (id: string): InvoiceWithDetails | null => {
   // Get items
   const itemsResult = db.query(
     `
-    SELECT id, invoice_id, product_id, description, quantity, unit, unit_price, line_total, notes, sort_order
+    SELECT id, invoice_id, product_id, description, quantity, unit, unit_price, line_total, notes, sort_order,
+           hs_code, country_of_origin, length_mm, width_mm, height_mm, weight_g
     FROM invoice_items
     WHERE invoice_id = ?
     ORDER BY sort_order
@@ -586,6 +626,12 @@ export const getInvoiceById = (id: string): InvoiceWithDetails | null => {
     lineTotal: row[7] as number,
     notes: row[8] as string,
     sortOrder: row[9] as number,
+    hsCode: row[10] ? String(row[10]) : null,
+    countryOfOrigin: row[11] ? String(row[11]) : null,
+    lengthMm: toNullableNumber(row[12]),
+    widthMm: toNullableNumber(row[13]),
+    heightMm: toNullableNumber(row[14]),
+    weightG: toNullableNumber(row[15]),
   }));
 
   // Attach per-item taxes
@@ -653,7 +699,7 @@ export const getInvoiceByShareToken = (
     SELECT id, invoice_number, customer_id, issue_date, due_date, currency, status,
            subtotal, discount_amount, discount_percentage, tax_rate, tax_amount, total,
            payment_terms, notes, share_token, created_at, updated_at,
-           prices_include_tax, rounding_mode
+           prices_include_tax, rounding_mode, locale
     FROM invoices
     WHERE share_token = ?
   `,
@@ -760,6 +806,11 @@ export const updateInvoice = async (
   if (!existing) return null;
 
   const db = getDatabase();
+  // existing.status may be the derived "overdue"; persist the stored status
+  // instead so it isn't frozen into the database.
+  const storedStatus = ((db.query("SELECT status FROM invoices WHERE id = ?", [
+    id,
+  ]) as unknown[][])[0]?.[0] ?? existing.status) as Invoice["status"];
 
   // Immutability: prevent structural changes once sent/paid
   // Voided invoices are completely locked — only deletion is allowed
@@ -889,6 +940,7 @@ export const updateInvoice = async (
       payment_terms = ?, notes = ?, updated_at = ?,
       prices_include_tax = COALESCE(?, prices_include_tax),
       rounding_mode = COALESCE(?, rounding_mode),
+      locale = ?,
       invoice_number = COALESCE(?, invoice_number)
     WHERE id = ?
   `,
@@ -901,7 +953,7 @@ export const updateInvoice = async (
             ? new Date(data.dueDate)
             : existing.dueDate,
         data.currency ?? existing.currency,
-        data.status ?? existing.status,
+        data.status ?? storedStatus,
         totals.subtotal,
         totals.discountAmount,
         data.discountPercentage ?? existing.discountPercentage,
@@ -917,6 +969,9 @@ export const updateInvoice = async (
             : 0
           : null,
         data.roundingMode ?? null,
+        data.locale === undefined
+          ? (existing.locale ?? null)
+          : (normalizeInvoiceLocaleSetting(data.locale) ?? null),
         nextInvoiceNumber ?? null,
         id,
       ],
@@ -957,18 +1012,33 @@ export const updateInvoice = async (
       db.query("DELETE FROM invoice_taxes WHERE invoice_id = ?", [id]);
       db.query("DELETE FROM invoice_items WHERE invoice_id = ?", [id]);
 
+      // Drafts take the products' current values; issued invoices (protection
+      // override) keep the snapshot taken when they were last saved as draft.
+      const previousSnapshots = new Map<string, ProductSnapshot>();
+      if (isIssued) {
+        for (const prev of existing.items) {
+          if (prev.productId && !previousSnapshots.has(prev.productId)) {
+            previousSnapshots.set(prev.productId, prev);
+          }
+        }
+      }
+
       // Insert new items
       for (let i = 0; i < data.items.length; i++) {
         const item = data.items[i];
         const itemId = generateUUID();
         const lineTotal = item.quantity * item.unitPrice;
         const unit = typeof item.unit === "string" ? item.unit.trim() : "";
+        const snapshot =
+          (item.productId && previousSnapshots.get(item.productId)) ||
+          snapshotProduct(item.productId);
 
         db.query(
           `
         INSERT INTO invoice_items (
-          id, invoice_id, product_id, description, quantity, unit, unit_price, line_total, notes, sort_order
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          id, invoice_id, product_id, description, quantity, unit, unit_price, line_total, notes, sort_order,
+          hs_code, country_of_origin, length_mm, width_mm, height_mm, weight_g
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `,
           [
             itemId,
@@ -981,6 +1051,7 @@ export const updateInvoice = async (
             lineTotal,
             item.notes,
             i,
+            ...snapshotParams(snapshot),
           ],
         );
 
@@ -1156,8 +1227,8 @@ export const duplicateInvoice = async (
       id, invoice_number, customer_id, issue_date, due_date, currency, status,
       subtotal, discount_amount, discount_percentage, tax_rate, tax_amount, total,
       payment_terms, notes, share_token, created_at, updated_at,
-      prices_include_tax, rounding_mode
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      prices_include_tax, rounding_mode, locale
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `,
       [
         newId,
@@ -1180,16 +1251,22 @@ export const duplicateInvoice = async (
         now,
         (original as Invoice).pricesIncludeTax ? 1 : 0,
         (original as Invoice).roundingMode || "line",
+        (original as Invoice).locale ?? null,
       ],
     );
     // Copy items
     for (const [idx, it] of items.entries()) {
       const itemId = generateUUID();
+      // New draft: take current product values, keep the original's if the product is gone
+      const snapshot = it.productId && getProductById(it.productId)
+        ? snapshotProduct(it.productId)
+        : it;
       db.query(
         `
       INSERT INTO invoice_items (
-        id, invoice_id, product_id, description, quantity, unit, unit_price, line_total, notes, sort_order
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        id, invoice_id, product_id, description, quantity, unit, unit_price, line_total, notes, sort_order,
+        hs_code, country_of_origin, length_mm, width_mm, height_mm, weight_g
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `,
         [
           itemId,
@@ -1202,6 +1279,7 @@ export const duplicateInvoice = async (
           it.lineTotal,
           it.notes || null,
           idx,
+          ...snapshotParams(snapshot),
         ],
       );
     }
@@ -1380,6 +1458,7 @@ function mapRowToInvoice(row: unknown[]): Invoice {
     updatedAt: new Date(row[17] as string),
     pricesIncludeTax: Boolean(row[18] as number),
     roundingMode: (row[19] as string) || "line",
+    locale: (row[20] as string) || undefined,
   };
 }
 
@@ -1387,18 +1466,15 @@ function applyDerivedOverdue<
   T extends { status: Invoice["status"]; dueDate?: Date },
 >(inv: T): T {
   if (!inv) return inv;
-  if (
-    inv.status === "paid" ||
-    inv.status === "voided" ||
-    inv.status === "complete"
-  )
-    return inv;
+  // Only sent invoices can become overdue; drafts were never issued and
+  // paid/voided/complete invoices are settled.
+  if (inv.status !== "sent") return inv;
   if (!inv.dueDate) return inv;
   const today = new Date();
   const dd = new Date(
-    inv.dueDate.getFullYear(),
-    inv.dueDate.getMonth(),
-    inv.dueDate.getDate(),
+    inv.dueDate.getUTCFullYear(),
+    inv.dueDate.getUTCMonth(),
+    inv.dueDate.getUTCDate(),
   );
   const td = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   if (dd < td) {

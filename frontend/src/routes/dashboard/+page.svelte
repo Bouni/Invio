@@ -1,12 +1,14 @@
 <script lang="ts">
   import { ShieldOff } from "lucide-svelte";
   import { getContext } from "svelte";
+  import { formatDate } from "$lib/utils/date";
+  import { invoiceStatusLabel } from "$lib/i18n/mod";
 
   let { data } = $props();
 
   let t = getContext("i18n") as (key: string) => string;
   let numberFormat = $derived(data.localization?.numberFormat || "comma");
-  let dateLocale = $derived(data.localization?.locale || "en");
+  let dateFormat = $derived(data.localization?.dateFormat || "YYYY-MM-DD");
   let statusCounts = $derived((data.status || {}) as Record<string, number>);
   let user = $derived(data.user);
   let canViewInvoices = $derived(user?.isAdmin || user?.permissions?.some((p) => p.resource === "invoices" && p.action === "read"));
@@ -200,7 +202,7 @@
             <td class="font-medium hover:underline">
               <a href={`/invoices/${inv.id}`}>{inv.invoiceNumber}</a>
               <div class="text-xs opacity-70 sm:hidden">
-                {t(inv.status?.charAt(0).toUpperCase() + (inv.status || "").slice(1))}
+                {t(invoiceStatusLabel(inv.status))}
               </div>
             </td>
             <td>{inv.customer?.name || ""}</td>
@@ -224,7 +226,7 @@
             </td>
             <td class="text-right text-sm tabular-nums">
               {#if inv.issueDate}
-                {new Date(inv.issueDate).toLocaleDateString(dateLocale, { year: "numeric", month: "short", day: "numeric" })}
+                {formatDate(inv.issueDate, dateFormat)}
               {/if}
             </td>
           </tr>

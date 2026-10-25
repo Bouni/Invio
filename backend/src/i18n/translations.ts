@@ -6,6 +6,7 @@ import trRaw from "./locales/tr.json" with { type: "json" };
 import esCoRaw from "./locales/es-co.json" with { type: "json" };
 import esMxRaw from "./locales/es-mx.json" with { type: "json" };
 import esArRaw from "./locales/es-ar.json" with { type: "json" };
+import bgRaw from "./locales/bg.json" with { type: "json" };
 
 export type InvoiceLabels = {
   invoiceTitle: string;
@@ -49,48 +50,49 @@ export type InvoiceLabels = {
 
 const REQUIRED_KEYS = [
   "invoiceTitle",
-  "invoiceNumberLabel",
-  "invoiceNumberShortLabel",
-  "invoiceDateLabel",
-  "dateLabel",
-  "dueDateLabel",
-  "dueShortLabel",
-  "referenceLabel",
-  "billToHeading",
-  "itemsHeading",
-  "itemHeaderDescription",
-  "itemHeaderQuantity",
-  "itemHeaderQuantityShort",
-  "itemHeaderUnit",
-  "itemHeaderUnitPrice",
-  "itemHeaderUnitPriceShort",
-  "itemHeaderAmount",
-  "itemHeaderTax",
-  "summaryHeading",
-  "subtotalLabel",
-  "discountLabel",
-  "taxLabel",
-  "totalLabel",
-  "statusLabel",
-  "taxSummaryHeading",
-  "taxableLabel",
-  "taxAmountLabel",
-  "taxIdLabel",
-  "outstandingBalanceLabel",
-  "paymentInformationHeading",
-  "paymentMethodsLabel",
-  "paymentMethodsPrefix",
-  "bankAccountLabel",
-  "bankAccountPrefix",
-  "paymentTermsLabel",
-  "notesHeading",
-  "thankYouNote",
+"invoiceNumberLabel",
+"invoiceNumberShortLabel",
+"invoiceDateLabel",
+"dateLabel",
+"dueDateLabel",
+"dueShortLabel",
+"referenceLabel",
+"billToHeading",
+"itemsHeading",
+"itemHeaderDescription",
+"itemHeaderQuantity",
+"itemHeaderQuantityShort",
+"itemHeaderUnit",
+"itemHeaderUnitPrice",
+"itemHeaderUnitPriceShort",
+"itemHeaderAmount",
+"itemHeaderTax",
+"summaryHeading",
+"subtotalLabel",
+"discountLabel",
+"taxLabel",
+"totalLabel",
+"statusLabel",
+"taxSummaryHeading",
+"taxableLabel",
+"taxAmountLabel",
+"taxIdLabel",
+"outstandingBalanceLabel",
+"paymentInformationHeading",
+"paymentMethodsLabel",
+"paymentMethodsPrefix",
+"bankAccountLabel",
+"bankAccountPrefix",
+"paymentTermsLabel",
+"notesHeading",
+"thankYouNote",
 ] as const;
 
 function coerceLabels(locale: string, raw: unknown): InvoiceLabels {
   if (!raw || typeof raw !== "object") {
     throw new Error(`Invalid translation data for locale '${locale}'`);
   }
+
   const record = raw as Record<string, unknown>;
   for (const key of REQUIRED_KEYS) {
     if (typeof record[key] !== "string") {
@@ -113,6 +115,7 @@ const catalogs: Record<string, InvoiceLabels> = Object.freeze({
   "es-mx": coerceLabels("es-mx", esMxRaw),
   es: coerceLabels("es", esCoRaw), // alias for es-co
   "es-ar": coerceLabels("es-ar", esArRaw),
+  bg: coerceLabels("bg", bgRaw),
 });
 
 function normalizeLocale(locale?: string): string {
@@ -133,4 +136,58 @@ export function getInvoiceLabels(
 
 export function availableInvoiceLocales(): string[] {
   return Object.keys(catalogs);
+}
+
+const SUPPORTED_LOCALES = new Set(availableInvoiceLocales());
+
+// Map a user-supplied locale to a supported invoice locale (exact, then base
+// language, then "en"). Returns undefined for empty input.
+export function normalizeInvoiceLocaleSetting(
+  raw: unknown,
+): string | undefined {
+  const lower = String(raw ?? "").trim().toLowerCase();
+  if (!lower) return undefined;
+  if (SUPPORTED_LOCALES.has(lower)) return lower;
+  const base = lower.split("-")[0];
+  if (SUPPORTED_LOCALES.has(base)) return base;
+  return "en";
+}
+
+function deriveLocaleFromCountryCode(countryCode?: string): string | undefined {
+  if (!countryCode) return undefined;
+  const code = String(countryCode).trim().toUpperCase();
+  if (!code) return undefined;
+
+  // Keep mapping constrained to currently supported invoice locales
+  if (code === "DE" || code === "AT" || code === "CH") return "de";
+  if (code === "NL" || code === "BE") return "nl";
+  if (code === "PT" || code === "BR") return "pt-br";
+  if (code === "TR") return "tr";
+  if (code === "ES" || code === "CO") return "es-co";
+  if (["AU", "CA", "GB", "IE", "NZ", "US", "AG", "BS", "BB", "BZ", "DM", "GD", "GY", "JM", "KN", "LC", "VC", "TT"].includes(code)) return "en";
+
+  return undefined;
+}
+
+// Resolution order: invoice locale -> customer country -> invoice fallback
+// locale setting -> UI locale setting -> "en"
+export function resolveInvoiceRenderLocale(
+  invoiceLocale: string | undefined,
+  customerCountryCode: string | undefined,
+  fallbackLocale: string | undefined,
+  settingsLocale: string | undefined,
+): string {
+  const fromInvoice = invoiceLocale?.trim().toLowerCase();
+  if (fromInvoice && SUPPORTED_LOCALES.has(fromInvoice)) return fromInvoice;
+
+  const fromCountry = deriveLocaleFromCountryCode(customerCountryCode);
+  if (fromCountry && SUPPORTED_LOCALES.has(fromCountry)) return fromCountry;
+
+  const fromFallback = fallbackLocale?.trim().toLowerCase();
+  if (fromFallback && SUPPORTED_LOCALES.has(fromFallback)) return fromFallback;
+
+  const fromSettings = settingsLocale?.trim().toLowerCase();
+  if (fromSettings && SUPPORTED_LOCALES.has(fromSettings)) return fromSettings;
+
+  return "en";
 }

@@ -6,6 +6,7 @@ import trMessages from "./locales/tr.json" with { type: "json" };
 import esMessages from "./locales/es-co.json" with { type: "json" };
 import esMxMessages from "./locales/es-mx.json" with { type: "json" };
 import esArMessages from "./locales/es-ar.json" with { type: "json" };
+import bgMessages from "./locales/bg.json" with { type: "json" };
 
 export type UiMessages = Record<string, string>;
 export type TranslateParams = Record<string, string | number>;
@@ -19,6 +20,7 @@ const catalogs: Record<string, UiMessages> = {
   es: esMessages as UiMessages,
   "es-mx": esMxMessages as UiMessages,
   "es-ar": esArMessages as UiMessages,
+  bg: bgMessages as UiMessages,
 };
 
 const DEFAULT_LOCALE = "en";
@@ -42,6 +44,26 @@ function formatWithParams(template: string, params?: TranslateParams): string {
     const value = params[key];
     return value === undefined || value === null ? "" : String(value);
   });
+}
+
+// Returns the key unchanged. Wrap strings that are passed to t() later through a
+// variable so extract-i18n-keys.js still finds them.
+export function tKey<K extends string>(key: K): K {
+  return key;
+}
+
+const INVOICE_STATUS_LABELS: Record<string, string> = {
+  draft: tKey("Draft"),
+  sent: tKey("Sent"),
+  complete: tKey("Complete"),
+  paid: tKey("Paid"),
+  overdue: tKey("Overdue"),
+  voided: tKey("Voided"),
+};
+
+// Translation key for an invoice status, e.g. "paid" -> "Paid"
+export function invoiceStatusLabel(status?: string): string {
+  return INVOICE_STATUS_LABELS[status ?? ""] ?? status ?? "";
 }
 
 export type TranslateFn = (key: string, params?: TranslateParams) => string;
@@ -87,13 +109,13 @@ export function resolveLocalization(
   const { locale: normalized, messages, t } = createTranslator(locale);
   const nf = numberFormat === "period" ? "period" : "comma";
   const df =
-    typeof dateFormat === "string" && dateFormat.trim()
-      ? dateFormat
-      : "YYYY-MM-DD";
+  typeof dateFormat === "string" && dateFormat.trim()
+  ? dateFormat
+  : "YYYY-MM-DD";
   const pcf =
-    postalCityFormat === "city-postal" || postalCityFormat === "postal-city"
-      ? postalCityFormat
-      : "auto";
+  postalCityFormat === "city-postal" || postalCityFormat === "postal-city"
+  ? postalCityFormat
+  : "auto";
   return {
     locale: normalized,
     messages,

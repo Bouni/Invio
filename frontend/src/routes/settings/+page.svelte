@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Save, CircleAlert, Building2, Palette, Sun, Languages, LayoutTemplate, CreditCard, Percent, Package, Hash, FileCodeCorner, Shield } from "lucide-svelte";
   import { getContext } from "svelte";
+  import { tKey } from "$lib/i18n/mod";
   import { invalidateAll } from "$app/navigation";
   import { page } from "$app/state";
   import QRCode from "qrcode";
@@ -20,6 +21,7 @@
     dateFormat: "YYYY-MM-DD",
     numberFormat: "comma",
     postalCityFormat: "auto",
+    invoiceFallbackLocale: "",
     ...initialSettings,
     allowProtectedInvoiceChanges: asBool((initialSettings as Record<string, unknown>).allowProtectedInvoiceChanges),
   } as Record<string, any>);
@@ -207,22 +209,22 @@
   }
 
   const sections = [
-    { id: "company", label: "Company", icon: Building2 },
-    { id: "branding", label: "Branding", icon: Palette },
-    { id: "appearance", label: "Appearance", icon: Sun },
-    { id: "localization", label: "Localization", icon: Languages },
+    { id: "company", label: tKey("Company"), icon: Building2 },
+    { id: "branding", label: tKey("Branding"), icon: Palette },
+    { id: "appearance", label: tKey("Appearance"), icon: Sun },
+    { id: "localization", label: tKey("Localization"), icon: Languages },
     {
       id: "templates",
-      label: "Templates",
+      label: tKey("Templates"),
       icon: LayoutTemplate,
       condition: () => data.hasTemplates,
     },
-    { id: "payments", label: "Payments", icon: CreditCard },
-    { id: "tax", label: "Tax", icon: Percent },
-    { id: "products", label: "Products", icon: Package },
-    { id: "numbering", label: "Numbering", icon: Hash },
-    { id: "xml", label: "XML Export", icon: FileCodeCorner },
-    { id: "security", label: "Security", icon: Shield, condition: () => !demoMode },
+    { id: "payments", label: tKey("Payments"), icon: CreditCard },
+    { id: "tax", label: tKey("Tax"), icon: Percent },
+    { id: "products", label: tKey("Products"), icon: Package },
+    { id: "numbering", label: tKey("Numbering"), icon: Hash },
+    { id: "xml", label: tKey("XML Export"), icon: FileCodeCorner },
+    { id: "security", label: tKey("Security"), icon: Shield, condition: () => !demoMode },
   ];
 
   function getSectionUrl(id: string) {
@@ -294,7 +296,7 @@
           </div>
           <input type="number" class="input input-bordered w-full" bind:value={settings.defaultTaxRate} disabled={!canUpdateSettings} step="0.01" />
         </label>
-        <label class="label cursor-pointer justify-start gap-4">
+        <label class="label flex cursor-pointer justify-start gap-4">
           <input type="checkbox" class="checkbox" bind:checked={settings.defaultPricesIncludeTax} disabled={!canUpdateSettings} />
           <span class="label-text">{t("Default Prices Include Tax")}</span>
         </label>
@@ -522,13 +524,33 @@
               </div>
               <select name="locale" class="select select-bordered w-full" bind:value={settings.locale} disabled={!canUpdateSettings}>
                 <option value="en">{t("English")}</option>
+                <option value="bg">Български</option>
                 <option value="nl">{t("Nederlands")}</option>
                 <option value="de">{t("Deutsch")}</option>
                 <option value="es">{t("Español")}</option>
                 <option value="tr">{t("Türkçe")}</option>
                 <option value="es-mx">{t("Español (México)")}</option>
+                <option value="pt-br">{t("Português (Brasil)")}</option>
                 <option value="es-ar">{t("Español (Argentina)")}</option>
               </select>
+            </label>
+            <label class="form-control"
+              ><div class="label">
+                <span class="label-text">{t("Invoice Fallback Language")}</span>
+              </div>
+              <select name="invoiceFallbackLocale" class="select select-bordered w-full" bind:value={settings.invoiceFallbackLocale} disabled={!canUpdateSettings}>
+                <option value="">{t("Same as interface language")}</option>
+                <option value="en">{t("English")}</option>
+                <option value="nl">{t("Nederlands")}</option>
+                <option value="de">{t("Deutsch")}</option>
+                <option value="es">{t("Español")}</option>
+                <option value="tr">{t("Türkçe")}</option>
+                <option value="pt-br">{t("Português (Brasil)")}</option>
+                <option value="es-ar">{t("Español (Argentina)")}</option>
+              </select>
+              <div class="label">
+                <span class="label-text-alt opacity-70">{t("Used for invoices when the customer's language is not available.")}</span>
+              </div>
             </label>
             <label class="form-control"
               ><div class="label">
@@ -566,7 +588,7 @@
               <CircleAlert size={16} />
               <span>{t("Allowing edits/deletes for sent or paid invoices can violate invoice retention laws. Only enable this if you understand the legal impact.")}</span>
             </div>
-            <label class="label cursor-pointer justify-start gap-4">
+            <label class="label flex cursor-pointer justify-start gap-4">
               <input type="checkbox" class="checkbox" bind:checked={settings.allowProtectedInvoiceChanges} disabled={!canUpdateSettings} />
               <span class="label-text">{t("Allow editing and deleting sent/paid invoices")}</span>
             </label>
@@ -598,7 +620,7 @@
         {:else if section === "numbering"}
           <div class="space-y-4">
             <h2 class="text-xl font-semibold">{t("Numbering")}</h2>
-            <label class="label cursor-pointer justify-start gap-4">
+            <label class="label flex cursor-pointer justify-start gap-4">
               <input type="checkbox" class="checkbox" bind:checked={settings.invoiceNumberingEnabled} disabled={!canUpdateSettings} />
               <span class="label-text">{t("Enable Automatic Invoice Numbering")}</span>
             </label>
@@ -639,11 +661,11 @@
                 {/if}
               </select>
             </label>
-            <label class="label cursor-pointer justify-start gap-4">
+            <label class="label flex cursor-pointer justify-start gap-4">
               <input type="checkbox" class="checkbox" bind:checked={settings.embedXmlInPdf} disabled={!canUpdateSettings} />
               <span class="label-text">{t("Embed XML in PDF")}</span>
             </label>
-            <label class="label cursor-pointer justify-start gap-4">
+            <label class="label flex cursor-pointer justify-start gap-4">
               <input type="checkbox" class="checkbox" bind:checked={settings.embedXmlInHtml} disabled={!canUpdateSettings} />
               <span class="label-text">{t("Embed XML in HTML")}</span>
             </label>

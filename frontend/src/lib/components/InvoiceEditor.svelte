@@ -3,6 +3,8 @@
   import { Plus, GripVertical } from "lucide-svelte";
   import { goto } from "$app/navigation";
   import { generateId } from "$lib/utils/id";
+  import ProductCombobox from "$lib/components/ProductCombobox.svelte";
+  import CustomerCombobox from "$lib/components/CustomerCombobox.svelte";
 
   let { data, invoice = null, formId = "invoice-editor-form" } = $props();
   let initInvoice = untrack(() => invoice);
@@ -18,17 +20,22 @@
   // an explicit override — see the customerId-aware preview effect below).
   let invoiceNumberTouched = $state(false);
 
+  // Today's date in the user's timezone (toISOString() would give the UTC date).
+  const now = new Date();
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+
   let form = $state({
     customerId: initInvoice?.customerId || "",
     invoiceNumber: initInvoice?.invoiceNumber ?? initNextInvoiceNumber,
     currency: initInvoice?.currency || "EUR",
     status: initInvoice?.status || "draft",
-    issueDate: initInvoice?.issueDate ? new Date(initInvoice.issueDate).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10),
+    issueDate: initInvoice?.issueDate ? new Date(initInvoice.issueDate).toISOString().slice(0, 10) : today,
     dueDate: initInvoice?.dueDate ? new Date(initInvoice.dueDate).toISOString().slice(0, 10) : "",
     taxMode: initInvoice?.taxMode || "invoice",
     taxRate: initInvoice?.taxRate || 0,
     pricesIncludeTax: initInvoice?.pricesIncludeTax ? "true" : "false",
     roundingMode: initInvoice?.roundingMode || "line",
+    locale: initInvoice?.locale || "",
     paymentTerms: initInvoice?.paymentTerms ?? initSettings.paymentTerms ?? "",
     notes: initInvoice?.notes ?? initSettings.defaultNotes ?? "",
   });
@@ -56,7 +63,7 @@
   );
 
   // The API returns customers in creation order; sorting by name keeps the
-  // dropdown scannable once the list grows (locale-aware, so accented names
+  // combobox list scannable once it grows (locale-aware, so accented names
   // land next to their base letter instead of after Z).
   let customers = $derived(
     [...(data.customers || [])].sort((a: any, b: any) =>
@@ -107,7 +114,7 @@
 
     item.description = product.name || item.description;
     item.unitPrice = Number(product.unitPrice ?? product.unit_price ?? item.unitPrice ?? 0);
-    item.unit = String(product.unit ?? item.unit ?? "");
+    item.unit = String(product.unit ?? "");
 
     if (form.taxMode === "line" && product.taxDefinitionId) {
       const taxDef = taxDefinitions.find((t: any) => t.id === product.taxDefinitionId);
@@ -261,17 +268,12 @@
   {/if}
 
   <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-    <label class="form-control">
-      <div class="label">
+    <div class="form-control">
+      <label class="label" for="invoice-customer">
         <span class="label-text">{t("Customer")} <span class="text-error">*</span></span>
-      </div>
-      <select class="select select-bordered w-full" bind:value={form.customerId} required>
-        <option value="">{t("Select customer")}</option>
-        {#each customers as c (c.id)}
-          <option value={c.id}>{c.name}</option>
-        {/each}
-      </select>
-    </label>
+      </label>
+      <CustomerCombobox id="invoice-customer" {customers} bind:value={form.customerId} required />
+    </div>
 
     <label class="form-control">
       <div class="label">
@@ -362,12 +364,7 @@
           </button>
 
           {#if products.length > 0}
-            <select class="select select-bordered w-44 max-w-xs shrink-0" bind:value={item.productId} onchange={(e) => applyProductSelection(item, (e.currentTarget as HTMLSelectElement).value)}>
-              <option value="">{t("Select product")}</option>
-              {#each products as p (p.id)}
-                <option value={p.id}>{p.name}{p.sku ? ` (${p.sku})` : ""}</option>
-              {/each}
-            </select>
+            <ProductCombobox id="product-{item.id}" class="w-44 max-w-xs shrink-0" {products} value={item.productId} onchange={(productId: string) => applyProductSelection(item, productId)} />
           {/if}
 
           <input class="input input-bordered w-full min-w-0" bind:value={item.description} placeholder={t("Description")} required />
@@ -446,6 +443,22 @@
       <select class="select select-bordered w-full" bind:value={form.roundingMode}>
         <option value="line">{t("Round per line")}</option>
         <option value="total">{t("Round on total")}</option>
+      </select>
+    </label>
+
+    <label class="form-control">
+      <div class="label">
+        <span class="label-text">{t("Invoice Language")}</span>
+      </div>
+      <select class="select select-bordered w-full" bind:value={form.locale}>
+        <option value="">{t("Automatic (from customer)")}</option>
+        <option value="en">{t("English")}</option>
+        <option value="nl">{t("Nederlands")}</option>
+        <option value="de">{t("Deutsch")}</option>
+        <option value="es">{t("Español")}</option>
+        <option value="tr">{t("Türkçe")}</option>
+        <option value="pt-br">{t("Português (Brasil)")}</option>
+        <option value="es-ar">{t("Español (Argentina)")}</option>
       </select>
     </label>
   </div>

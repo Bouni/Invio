@@ -1,20 +1,27 @@
 # Translation Status
 
-Last updated: 2026-03-31 10:04:24
+Last updated: 2026-10-19 16:41:04
 
-Reference locale (en): **345 keys**
+Reference locale (en): **349 keys**
 
 ## Overview
 
 | Locale | File | Missing | Additional | Status |
 |--------|------|---------|------------|--------|
-| pt-br | pt-br.json | 0 | 0 | ✅ |
-| nl | nl.json | 0 | 0 | ✅ |
+| es-ar | es-ar.json | 0 | 0 | ✅ |
 | de | de.json | 0 | 0 | ✅ |
+| nl | nl.json | 0 | 0 | ✅ |
+| es-co | es-co.json | 0 | 0 | ✅ |
+| tr | tr.json | 0 | 0 | ✅ |
+| pt-br | pt-br.json | 0 | 0 | ✅ |
 
 ## Details
 
-### pt-br (pt-br.json)
+### es-ar (es-ar.json)
+
+✅ All translations complete
+
+### de (de.json)
 
 ✅ All translations complete
 
@@ -22,7 +29,15 @@ Reference locale (en): **345 keys**
 
 ✅ All translations complete
 
-### de (de.json)
+### es-co (es-co.json)
+
+✅ All translations complete
+
+### tr (tr.json)
+
+✅ All translations complete
+
+### pt-br (pt-br.json)
 
 ✅ All translations complete
 
