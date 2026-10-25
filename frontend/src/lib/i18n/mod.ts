@@ -4,6 +4,7 @@ import deMessages from "./locales/de.json" with { type: "json" };
 import ptMessages from "./locales/pt-br.json" with { type: "json" };
 import trMessages from "./locales/tr.json" with { type: "json" };
 import esMessages from "./locales/es-co.json" with { type: "json" };
+import esMxMessages from "./locales/es-mx.json" with { type: "json" };
 import esArMessages from "./locales/es-ar.json" with { type: "json" };
 import bgMessages from "./locales/bg.json" with { type: "json" };
 
@@ -17,6 +18,7 @@ const catalogs: Record<string, UiMessages> = {
   pt: ptMessages as UiMessages,
   tr: trMessages as UiMessages,
   es: esMessages as UiMessages,
+  "es-mx": esMxMessages as UiMessages,
   "es-ar": esArMessages as UiMessages,
   bg: bgMessages as UiMessages,
 };
