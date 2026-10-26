@@ -89,6 +89,10 @@
         <div class="mb-1 text-sm opacity-70">{t("Country Code")}</div>
         <div class="font-medium">{c.countryCode || "-"}</div>
       </div>
+      <div>
+        <div class="mb-1 text-sm opacity-70">{t("State / Province")}</div>
+        <div class="font-medium">{c.region || "-"}</div>
+      </div>
     </div>
   </div>
 {/if}

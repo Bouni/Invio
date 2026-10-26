@@ -96,5 +96,12 @@
       </label>
       <input type="text" id="countryCode" name="countryCode" placeholder={t("e.g. US, NL, DE")} class="input input-sm input-bordered w-full" />
     </div>
+
+    <div class="form-control w-full">
+      <label class="label pb-1" for="region">
+        <span class="label-text">{t("State / Province")}</span>
+      </label>
+      <input type="text" id="region" name="region" placeholder={t("e.g. CA, NSW, ON")} class="input input-sm input-bordered w-full" />
+    </div>
   </div>
 </form>

@@ -345,6 +345,8 @@
   "You do not have permission to view invoices. Contact an administrator to request access.": "No tiene permisos para ver facturas. Póngase en contacto con un administrador para solicitar acceso.",
   "e.g. Bank Transfer, PayPal": "ej. Transferencia bancaria, PSE, Tarjeta",
   "e.g. INV-2025-001": "ej. FAC-2026-001",
+  "State / Province": "Estado / departamento",
+  "e.g. CA, NSW, ON": "ej. CA, NSW, ON",
   "e.g. US, NL, DE": "ej. US, NL, DE",
   "item(s)": "ítem(s)",
   "or": "o"

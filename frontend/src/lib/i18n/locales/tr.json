@@ -345,6 +345,8 @@
   "You do not have permission to view invoices. Contact an administrator to request access.": "Faturaları görüntüleme izniniz yok. Erişim istemek için bir yöneticiyle iletişime geçin.",
   "e.g. Bank Transfer, PayPal": "ör. Havale/EFT, PayPal",
   "e.g. INV-2025-001": "ör. FAT-2025-001",
+  "State / Province": "Eyalet / il",
+  "e.g. CA, NSW, ON": "ör. CA, NSW, ON",
   "e.g. US, NL, DE": "ör. TR, NL, DE",
   "item(s)": "kalem",
   "or": "veya"

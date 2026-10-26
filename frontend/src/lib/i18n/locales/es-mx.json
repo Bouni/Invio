@@ -292,6 +292,8 @@
   "Protect your account with two-factor authentication.": "Proteja su cuenta con autenticación en dos pasos.",
   "e.g. Bank Transfer, PayPal": "p. ej., Transferencia bancaria, tarjeta, efectivo",
   "e.g. INV-2025-001": "p. ej., FAC-2026-001",
+  "State / Province": "Estado / provincia",
+  "e.g. CA, NSW, ON": "p. ej., JAL, CA, ON",
   "e.g. US, NL, DE": "p. ej., MX, US, CA",
   "item(s)": "concepto(s)"
 }

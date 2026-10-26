@@ -174,6 +174,7 @@ export function generateUBLInvoiceXML(
         ${buyerAddress.street ? `<cbc:StreetName>${xmlEscape(buyerAddress.street)}</cbc:StreetName>` : ""}
         ${buyerAddress.city ? `<cbc:CityName>${xmlEscape(buyerAddress.city)}</cbc:CityName>` : ""}
         ${buyerAddress.postalZone ? `<cbc:PostalZone>${xmlEscape(buyerAddress.postalZone)}</cbc:PostalZone>` : ""}
+        ${buyer.region ? `<cbc:CountrySubentity>${xmlEscape(buyer.region)}</cbc:CountrySubentity>` : ""}
         <cac:Country><cbc:IdentificationCode>${xmlEscape(buyerAddress.countryCode || "US")}</cbc:IdentificationCode></cac:Country>
       </cac:PostalAddress>
       ${buyer.taxId ? `<cac:PartyTaxScheme><cbc:CompanyID>${xmlEscape(buyer.taxId)}</cbc:CompanyID><cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme></cac:PartyTaxScheme>` : ""}

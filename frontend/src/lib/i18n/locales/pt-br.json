@@ -345,6 +345,8 @@
   "You do not have permission to view invoices. Contact an administrator to request access.": "Você não tem permissão para ver faturas. Entre em contato com um administrador para solicitar acesso.",
   "e.g. Bank Transfer, PayPal": "ex.: transferência bancária, PayPal",
   "e.g. INV-2025-001": "ex.: FAT-2025-001",
+  "State / Province": "Estado / província",
+  "e.g. CA, NSW, ON": "ex.: SP, CA, ON",
   "e.g. US, NL, DE": "ex.: BR, PT, US",
   "item(s)": "item(ns)",
   "or": "ou"
