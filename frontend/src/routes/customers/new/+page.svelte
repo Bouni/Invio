@@ -67,7 +67,7 @@
       <textarea id="address" name="address" class="textarea textarea-bordered w-full" rows="3"></textarea>
     </div>
 
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
       <div class="form-control w-full">
         <label class="label pb-1" for="city">
           <span class="label-text">{t("City")}</span>
@@ -80,6 +80,13 @@
           <span class="label-text">{t("Postal Code")}</span>
         </label>
         <input type="text" id="postalCode" name="postalCode" class="input input-sm input-bordered w-full" />
+      </div>
+
+      <div class="form-control w-full">
+        <label class="label pb-1" for="region">
+          <span class="label-text">{t("State / Province")}</span>
+        </label>
+        <input type="text" id="region" name="region" placeholder={t("e.g. CA, NSW, ON")} class="input input-sm input-bordered w-full" />
       </div>
     </div>
 
@@ -95,13 +102,6 @@
         <span class="label-text">{t("Country Code (ISO alpha-2)")}</span>
       </label>
       <input type="text" id="countryCode" name="countryCode" placeholder={t("e.g. US, NL, DE")} class="input input-sm input-bordered w-full" />
-    </div>
-
-    <div class="form-control w-full">
-      <label class="label pb-1" for="region">
-        <span class="label-text">{t("State / Province")}</span>
-      </label>
-      <input type="text" id="region" name="region" placeholder={t("e.g. CA, NSW, ON")} class="input input-sm input-bordered w-full" />
     </div>
   </div>
 </form>

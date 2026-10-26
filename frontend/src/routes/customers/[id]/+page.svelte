@@ -82,16 +82,16 @@
         <div class="font-medium">{formatPostalCityLine(c.city, c.postalCode, c.countryCode, getLoc()?.postalCityFormat) || "-"}</div>
       </div>
       <div>
+        <div class="mb-1 text-sm opacity-70">{t("State / Province")}</div>
+        <div class="font-medium">{c.region || "-"}</div>
+      </div>
+      <div>
         <div class="mb-1 text-sm opacity-70">{t("Tax ID")}</div>
         <div class="font-medium">{c.taxId || "-"}</div>
       </div>
       <div>
         <div class="mb-1 text-sm opacity-70">{t("Country Code")}</div>
         <div class="font-medium">{c.countryCode || "-"}</div>
-      </div>
-      <div>
-        <div class="mb-1 text-sm opacity-70">{t("State / Province")}</div>
-        <div class="font-medium">{c.region || "-"}</div>
       </div>
     </div>
   </div>
