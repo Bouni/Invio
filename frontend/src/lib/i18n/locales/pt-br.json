@@ -347,5 +347,8 @@
   "e.g. INV-2025-001": "ex.: FAT-2025-001",
   "e.g. US, NL, DE": "ex.: BR, PT, US",
   "item(s)": "item(ns)",
-  "or": "ou"
+  "or": "ou",
+  "Country": "País",
+  "Select country": "Selecionar país",
+  "No countries found": "Nenhum país encontrado"
 }

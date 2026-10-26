@@ -347,5 +347,8 @@
   "e.g. INV-2025-001": "bijv. INV-2025-001",
   "e.g. US, NL, DE": "bijv. NL, BE, DE",
   "item(s)": "item(s)",
-  "or": "of"
+  "or": "of",
+  "Country": "Land",
+  "Select country": "Selecteer land",
+  "No countries found": "Geen landen gevonden"
 }

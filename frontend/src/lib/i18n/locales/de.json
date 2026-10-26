@@ -347,5 +347,8 @@
   "e.g. INV-2025-001": "z. B. RE-2025-001",
   "e.g. US, NL, DE": "z. B. DE, AT, CH",
   "item(s)": "Position(en)",
-  "or": "oder"
+  "or": "oder",
+  "Country": "Land",
+  "Select country": "Land auswählen",
+  "No countries found": "Keine Länder gefunden"
 }

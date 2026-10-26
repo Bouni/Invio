@@ -347,5 +347,8 @@
   "e.g. INV-2025-001": "ör. FAT-2025-001",
   "e.g. US, NL, DE": "ör. TR, NL, DE",
   "item(s)": "kalem",
-  "or": "veya"
+  "or": "veya",
+  "Country": "Ülke",
+  "Select country": "Ülke seçin",
+  "No countries found": "Ülke bulunamadı"
 }

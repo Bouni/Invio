@@ -2,6 +2,7 @@
   import { getContext } from "svelte";
   import { Save } from "lucide-svelte";
   import { enhance } from "$app/forms";
+  import CountrySelect from "$lib/components/CountrySelect.svelte";
 
   let { data, form } = $props();
   let t = getContext("i18n") as (key: string) => string;
@@ -96,9 +97,9 @@
 
       <div class="form-control w-full">
         <label class="label pb-1" for="countryCode">
-          <span class="label-text">{t("Country Code (ISO alpha-2)")}</span>
+          <span class="label-text">{t("Country")}</span>
         </label>
-        <input type="text" id="countryCode" name="countryCode" placeholder={t("e.g. US, NL, DE")} class="input input-sm input-bordered w-full" value={c.countryCode || ""} />
+        <CountrySelect id="countryCode" name="countryCode" size="sm" value={c.countryCode || ""} />
       </div>
     </div>
   </form>

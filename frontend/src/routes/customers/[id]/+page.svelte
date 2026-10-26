@@ -1,4 +1,5 @@
 <script lang="ts">
+  import CountryFlag from "$lib/components/CountryFlag.svelte";
   import { getContext } from "svelte";
   import { Pencil, Trash2 } from "lucide-svelte";
   import { enhance } from "$app/forms";
@@ -86,8 +87,10 @@
         <div class="font-medium">{c.taxId || "-"}</div>
       </div>
       <div>
-        <div class="mb-1 text-sm opacity-70">{t("Country Code")}</div>
-        <div class="font-medium">{c.countryCode || "-"}</div>
+        <div class="mb-1 text-sm opacity-70">{t("Country")}</div>
+        <div class="font-medium">
+          {#if c.countryCode}<CountryFlag code={c.countryCode} label="name" />{:else}-{/if}
+        </div>
       </div>
     </div>
   </div>

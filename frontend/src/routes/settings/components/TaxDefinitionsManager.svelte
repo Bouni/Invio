@@ -2,6 +2,8 @@
   import { getContext } from "svelte";
   import { Plus, Pencil, Trash2 } from "lucide-svelte";
   import { invalidateAll } from "$app/navigation";
+  import CountrySelect from "$lib/components/CountrySelect.svelte";
+  import CountryFlag from "$lib/components/CountryFlag.svelte";
 
   let { taxDefinitions = [] } = $props();
   let t = getContext("i18n") as (key: string, params?: any) => string;
@@ -110,12 +112,12 @@
           </div>
           <input type="number" class="input input-bordered w-full" bind:value={formData.percent} step="0.01" min="0" required />
         </label>
-        <label class="form-control">
-          <div class="label">
-            <span class="label-text">{t("Country code")}</span>
-          </div>
-          <input type="text" class="input input-bordered w-full" bind:value={formData.countryCode} placeholder={t("Country code placeholder")} maxlength="2" />
-        </label>
+        <div class="form-control">
+          <label class="label" for="taxCountryCode">
+            <span class="label-text">{t("Country")}</span>
+          </label>
+          <CountrySelect id="taxCountryCode" bind:value={formData.countryCode} />
+        </div>
       </div>
 
       <div class="flex gap-2">
@@ -144,7 +146,7 @@
             <div class="text-base-content/60 text-sm">
               {tax.percent}%
               {#if tax.countryCode}
-                &bull; {tax.countryCode}
+                &bull; <CountryFlag code={tax.countryCode} label="code" />
               {/if}
             </div>
           </div>

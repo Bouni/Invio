@@ -1,4 +1,5 @@
 <script lang="ts">
+  import CountryFlag from "$lib/components/CountryFlag.svelte";
   import { getContext } from "svelte";
   import { invoiceStatusLabel } from "$lib/i18n/mod";
   import { FileText, Edit, Copy, ExternalLink, Download, ArrowLeft, MoreHorizontal, FileCode2, ShieldOff, Send, Ban, Trash2, CheckCircle, Upload, Check, Pencil, ChevronDown, Mail } from "lucide-svelte";
@@ -457,7 +458,7 @@
               .filter(Boolean)
               .join("\n")}
             {#if invoice.customer?.countryCode}
-              <br />{invoice.customer.countryCode}
+              <br /><CountryFlag code={invoice.customer.countryCode} label="name" />
             {/if}
           {/if}
         </div>

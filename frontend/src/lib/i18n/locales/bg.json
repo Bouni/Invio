@@ -294,5 +294,8 @@
   "e.g. INV-2025-001": "напр. INV-2025-001",
   "e.g. US, NL, DE": "напр. US, NL, DE",
   "item(s)": "артикул(и)",
-  "Español (Argentina)": "Español (Argentina)"
+  "Español (Argentina)": "Español (Argentina)",
+  "Country": "Държава",
+  "Select country": "Избери държава",
+  "No countries found": "Няма намерени държави"
 }

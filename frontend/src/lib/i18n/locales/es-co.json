@@ -347,5 +347,8 @@
   "e.g. INV-2025-001": "ej. FAC-2026-001",
   "e.g. US, NL, DE": "ej. US, NL, DE",
   "item(s)": "ítem(s)",
-  "or": "o"
+  "or": "o",
+  "Country": "País",
+  "Select country": "Seleccionar país",
+  "No countries found": "No se encontraron países"
 }

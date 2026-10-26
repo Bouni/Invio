@@ -293,5 +293,8 @@
   "e.g. Bank Transfer, PayPal": "p. ej., Transferencia bancaria, tarjeta, efectivo",
   "e.g. INV-2025-001": "p. ej., FAC-2026-001",
   "e.g. US, NL, DE": "p. ej., MX, US, CA",
-  "item(s)": "concepto(s)"
+  "item(s)": "concepto(s)",
+  "Country": "País",
+  "Select country": "Seleccionar país",
+  "No countries found": "No se encontraron países"
 }

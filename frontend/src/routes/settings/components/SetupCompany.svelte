@@ -1,4 +1,6 @@
 <script lang="ts">
+  import CountrySelect from "$lib/components/CountrySelect.svelte";
+
   let { settings, t, canUpdateSettings } = $props<{
     settings: any;
     t: any;
@@ -57,11 +59,11 @@
       <div class="label"><span class="label-text">{t("Tax ID")}</span></div>
       <input type="text" class="input input-bordered w-full" bind:value={settings.companyTaxId} disabled={!canUpdateSettings} />
     </label>
-    <label class="form-control">
-      <div class="label">
-        <span class="label-text">{t("Country Code")}</span>
-      </div>
-      <input type="text" class="input input-bordered w-full" bind:value={settings.companyCountryCode} disabled={!canUpdateSettings} placeholder="US" />
-    </label>
+    <div class="form-control">
+      <label class="label" for="setupCompanyCountryCode">
+        <span class="label-text">{t("Country")}</span>
+      </label>
+      <CountrySelect id="setupCompanyCountryCode" bind:value={settings.companyCountryCode} disabled={!canUpdateSettings} />
+    </div>
   </div>
 </div>
