@@ -349,5 +349,8 @@
   "e.g. CA, NSW, ON": "ör. CA, NSW, ON",
   "e.g. US, NL, DE": "ör. TR, NL, DE",
   "item(s)": "kalem",
-  "or": "veya"
+  "or": "veya",
+  "Country": "Ülke",
+  "Select country": "Ülke seçin",
+  "No countries found": "Ülke bulunamadı"
 }

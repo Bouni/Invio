@@ -349,5 +349,8 @@
   "e.g. CA, NSW, ON": "e.g. CA, NSW, ON",
   "e.g. US, NL, DE": "e.g. US, NL, DE",
   "item(s)": "item(s)",
-  "or": "or"
+  "or": "or",
+  "Country": "Country",
+  "Select country": "Select country",
+  "No countries found": "No countries found"
 }

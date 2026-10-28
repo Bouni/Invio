@@ -349,5 +349,8 @@
   "e.g. CA, NSW, ON": "bijv. CA, NSW, ON",
   "e.g. US, NL, DE": "bijv. NL, BE, DE",
   "item(s)": "item(s)",
-  "or": "of"
+  "or": "of",
+  "Country": "Land",
+  "Select country": "Selecteer land",
+  "No countries found": "Geen landen gevonden"
 }

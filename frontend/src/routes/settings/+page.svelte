@@ -6,6 +6,7 @@
   import { page } from "$app/state";
   import QRCode from "qrcode";
   import ThemeToggle from "$lib/components/ThemeToggle.svelte";
+  import CountrySelect from "$lib/components/CountrySelect.svelte";
   import TaxDefinitionsManager from "./components/TaxDefinitionsManager.svelte";
   import ProductOptionsManager from "./components/ProductOptionsManager.svelte";
   import TemplateOptionsManager from "./components/TemplateOptionsManager.svelte";
@@ -499,12 +500,12 @@
                 </div>
                 <input type="text" class="input input-bordered w-full" bind:value={settings.companyTaxId} disabled={!canUpdateSettings} />
               </label>
-              <label class="form-control"
-                ><div class="label">
-                  <span class="label-text">{t("Country Code")}</span>
-                </div>
-                <input type="text" class="input input-bordered w-full" bind:value={settings.companyCountryCode} disabled={!canUpdateSettings} placeholder="US" />
-              </label>
+              <div class="form-control">
+                <label class="label" for="companyCountryCode">
+                  <span class="label-text">{t("Country")}</span>
+                </label>
+                <CountrySelect id="companyCountryCode" bind:value={settings.companyCountryCode} disabled={!canUpdateSettings} />
+              </div>
             </div>
           </div>
         {:else if section === "branding"}

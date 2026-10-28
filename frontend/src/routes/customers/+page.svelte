@@ -1,4 +1,5 @@
 <script lang="ts">
+  import CountryFlag from "$lib/components/CountryFlag.svelte";
   import { UserPlus } from "lucide-svelte";
   import { getContext } from "svelte";
   import { formatPostalCityLine } from "$lib/address";
@@ -73,7 +74,9 @@
           </td>
           <td class="opacity-70">{c.contactName || ""}</td>
           <td class="opacity-70">{c.address || ""}</td>
-          <td class="opacity-70">{formatPostalCityLine(c.city, c.postalCode, c.countryCode, getLoc()?.postalCityFormat) || "-"}</td>
+          <td class="opacity-70">
+            {#if c.countryCode}<CountryFlag code={c.countryCode} class="mr-1" />{/if}{formatPostalCityLine(c.city, c.postalCode, c.countryCode, getLoc()?.postalCityFormat) || "-"}
+          </td>
           <td class="opacity-70">{c.email || ""}</td>
         </tr>
       {/each}
