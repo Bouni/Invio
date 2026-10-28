@@ -8,9 +8,6 @@
   <a href="https://github.com/kittendevv/Invio/wiki">Documentation</a> •
   <a href="https://ko-fi.com/codingkitten">Support</a>
 </p>
-<p align="center">
-  <img src="https://hackatime-badge.hackclub.com/U080TNHKK32/Invio" alt="Hackatime Badge" style="height: 30px;" height="30">
-</p>
 
 ------
 
