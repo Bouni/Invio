@@ -1,6 +1,7 @@
 {
   "version": "5",
   "specifiers": {
+    "jsr:@deno/installer-shell-setup@*": "0.3.4",
     "jsr:@pakornv/fresh-plugin-tailwindcss@^1.0.3": "1.0.3",
     "jsr:@std/fs@^1.0.17": "1.0.19",
     "jsr:@std/internal@^1.0.10": "1.0.10",
@@ -9,12 +10,16 @@
     "npm:@tailwindcss/postcss@^4.1.7": "4.1.12",
     "npm:cssnano@^7.0.7": "7.1.1_postcss@8.5.6",
     "npm:daisyui@^5.0.54": "5.0.54",
+    "npm:nodemailer@*": "10.2.1",
     "npm:otpauth@^9.4.1": "9.5.1",
     "npm:pdf-lib@^1.17.1": "1.17.1",
     "npm:postcss@^8.5.3": "8.5.6",
     "npm:tailwindcss@^4.1.12": "4.1.12"
   },
   "jsr": {
+    "@deno/installer-shell-setup@0.3.4": {
+      "integrity": "48665d1a737d487cce6874bc97bba70a5aeffa7053aca3f60df93c6fab8963b4"
+    },
     "@pakornv/fresh-plugin-tailwindcss@1.0.3": {
       "integrity": "e4c0d63075dcb09a7932b5f814472a5c3cadeb129649045b44978369be807cec",
       "dependencies": [
@@ -526,6 +531,9 @@
     },
     "node-releases@2.0.19": {
       "integrity": "sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw=="
+    },
+    "nodemailer@10.2.1": {
+      "integrity": "sha512-ZrDNsPFoDMwefNs7sJwrYiEJ/CG4ClJWDZv05iNJsEBWa8GRDry1QJHTJxsuTAY9eDDKjX4k+q3SxslXJOao7w=="
     },
     "nth-check@2.1.1": {
       "integrity": "sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==",

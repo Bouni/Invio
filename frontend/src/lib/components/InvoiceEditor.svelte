@@ -23,11 +23,11 @@
   // Today's date in the user's timezone (toISOString() would give the UTC date).
   const now = new Date();
   const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
-
+  
   let form = $state({
     customerId: initInvoice?.customerId || "",
     invoiceNumber: initInvoice?.invoiceNumber ?? initNextInvoiceNumber,
-    currency: initInvoice?.currency || "EUR",
+    currency: initSettings?.currency || "EUR",
     status: initInvoice?.status || "draft",
     issueDate: initInvoice?.issueDate ? new Date(initInvoice.issueDate).toISOString().slice(0, 10) : today,
     dueDate: initInvoice?.dueDate ? new Date(initInvoice.dueDate).toISOString().slice(0, 10) : "",
