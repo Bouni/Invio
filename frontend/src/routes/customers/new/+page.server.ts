@@ -33,6 +33,7 @@ export const actions: Actions = {
     const address = String(form.get("address") || "");
     const city = String(form.get("city") || "");
     const postalCode = String(form.get("postalCode") || "");
+    const region = String(form.get("region") || "");
     const taxId = String(form.get("taxId") || "");
     const countryCode = String(form.get("countryCode") || "");
 
@@ -50,6 +51,7 @@ export const actions: Actions = {
         address: address || undefined,
         city: city || undefined,
         postalCode: postalCode || undefined,
+        region: region || undefined,
         taxId: taxId || undefined,
         countryCode: countryCode || undefined,
       });

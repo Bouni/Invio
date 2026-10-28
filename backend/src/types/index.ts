@@ -7,6 +7,7 @@ export interface Customer {
   address?: string;
   city?: string;
   postalCode?: string;
+  region?: string; // state/province/county; required by carriers for some countries (US, CA, AU, ZA, ...)
   countryCode?: string; // ISO 3166-1 alpha-2
   taxId?: string;
   reference?: string; // BuyerReference or order ref
@@ -307,6 +308,7 @@ export interface CreateCustomerRequest {
   address?: string;
   city?: string;
   postalCode?: string;
+  region?: string; // state/province/county
   countryCode?: string; // ISO alpha-2
   taxId?: string;
 }
@@ -373,6 +375,7 @@ export interface TemplateContext {
   customerAddress?: string;
   customerCity?: string;
   customerPostalCode?: string;
+  customerRegion?: string;
   customerCountryCode?: string;
   customerPostalCity?: string;
   customerTaxId?: string;

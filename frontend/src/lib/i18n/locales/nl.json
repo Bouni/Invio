@@ -345,6 +345,8 @@
   "You do not have permission to view invoices. Contact an administrator to request access.": "Je hebt geen toestemming om facturen te bekijken. Neem contact op met een beheerder om toegang aan te vragen.",
   "e.g. Bank Transfer, PayPal": "bijv. bankoverschrijving, PayPal",
   "e.g. INV-2025-001": "bijv. INV-2025-001",
+  "State / Province": "Staat / provincie",
+  "e.g. CA, NSW, ON": "bijv. CA, NSW, ON",
   "e.g. US, NL, DE": "bijv. NL, BE, DE",
   "item(s)": "item(s)",
   "or": "of"

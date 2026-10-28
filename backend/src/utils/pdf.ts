@@ -360,6 +360,7 @@ function buildContext(
     customerAddress: _escapeHtmlWithBreaks(invoice.customer.address),
     customerCity: invoice.customer.city,
     customerPostalCode: invoice.customer.postalCode,
+    customerRegion: invoice.customer.region,
     customerCountryCode: invoice.customer.countryCode,
     customerPostalCity: formatPostalCityLine(
       invoice.customer.postalCode,

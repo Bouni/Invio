@@ -345,6 +345,8 @@
   "You do not have permission to view invoices. Contact an administrator to request access.": "Sie haben keine Berechtigung, Rechnungen anzuzeigen. Wenden Sie sich an einen Administrator, um Zugriff anzufordern.",
   "e.g. Bank Transfer, PayPal": "z. B. Banküberweisung, PayPal",
   "e.g. INV-2025-001": "z. B. RE-2025-001",
+  "State / Province": "Bundesstaat / Provinz",
+  "e.g. CA, NSW, ON": "z. B. CA, NSW, ON",
   "e.g. US, NL, DE": "z. B. DE, AT, CH",
   "item(s)": "Position(en)",
   "or": "oder"

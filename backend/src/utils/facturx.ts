@@ -161,6 +161,7 @@ export function generateFacturX22XML(
         ${buyerAddressLines.lineTwo ? `<ram:LineTwo>${xmlEscape(buyerAddressLines.lineTwo)}</ram:LineTwo>` : ""}
         ${(buyer.city || buyerAddressLines.city) ? `<ram:CityName>${xmlEscape(buyer.city || buyerAddressLines.city)}</ram:CityName>` : ""}
         <ram:CountryID>${xmlEscape(buyer.countryCode || opts.buyerCountryCode || "DE")}</ram:CountryID>
+        ${buyer.region ? `<ram:CountrySubDivisionName>${xmlEscape(buyer.region)}</ram:CountrySubDivisionName>` : ""}
       </ram:PostalTradeAddress>
       <ram:URIUniversalCommunication>
         <ram:URIID schemeID="0088">${xmlEscape(buyer.taxId || "0000000000000")}</ram:URIID>

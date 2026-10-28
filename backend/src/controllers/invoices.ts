@@ -1488,11 +1488,11 @@ function getCustomerById(id: string) {
   let rows: unknown[][] = [];
   try {
     rows = db.query(
-      "SELECT id, name, contact_name, email, phone, address, country_code, tax_id, created_at, city, postal_code FROM customers WHERE id = ?",
+      "SELECT id, name, contact_name, email, phone, address, country_code, tax_id, created_at, city, postal_code, region FROM customers WHERE id = ?",
       [id],
     ) as unknown[][];
   } catch (_e) {
-    // Fallback older schema without contact_name/city/postal_code
+    // Fallback older schema without contact_name/city/postal_code/region
     try {
       rows = db.query(
         "SELECT id, name, email, phone, address, country_code, tax_id, created_at, city, postal_code FROM customers WHERE id = ?",
@@ -1519,6 +1519,7 @@ function getCustomerById(id: string) {
     createdAt: new Date(row[8] as string),
     city: (row[9] ?? undefined) as string | undefined,
     postalCode: (row[10] ?? undefined) as string | undefined,
+    region: (row[11] ?? undefined) as string | undefined,
   };
 }
 

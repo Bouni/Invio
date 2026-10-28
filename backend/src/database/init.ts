@@ -161,6 +161,7 @@ function ensureCustomerColumns(database: DB): void {
   addColumnIfMissing(database, "customers", "city", "TEXT");
   addColumnIfMissing(database, "customers", "postal_code", "TEXT");
   addColumnIfMissing(database, "customers", "customer_number", "INTEGER");
+  addColumnIfMissing(database, "customers", "region", "TEXT");
 }
 
 /** Assign a permanent sequential customer_number (by creation order) to any customer missing one. */
