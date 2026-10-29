@@ -347,5 +347,16 @@
   "e.g. INV-2025-001": "ör. FAT-2025-001",
   "e.g. US, NL, DE": "ör. TR, NL, DE",
   "item(s)": "kalem",
-  "or": "veya"
+  "or": "veya",
+  "Year": "Yıl",
+  "All time": "Tüm zamanlar",
+  "Sales": "Satışlar",
+  "Sales per month": "Aylık satışlar",
+  "Sales by country": "Ülkelere göre satışlar",
+  "Top countries": "En çok satış yapılan ülkeler",
+  "Top customers": "En iyi müşteriler",
+  "No sales in this period": "Bu dönemde satış yok",
+  "No country set": "Ülke belirtilmemiş",
+  "No sales": "Satış yok",
+  "Month": "Ay"
 }

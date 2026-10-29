@@ -293,5 +293,16 @@
   "e.g. Bank Transfer, PayPal": "p. ej., Transferencia bancaria, tarjeta, efectivo",
   "e.g. INV-2025-001": "p. ej., FAC-2026-001",
   "e.g. US, NL, DE": "p. ej., MX, US, CA",
-  "item(s)": "concepto(s)"
+  "item(s)": "concepto(s)",
+  "Year": "Año",
+  "All time": "Todo el período",
+  "Sales": "Ventas",
+  "Sales per month": "Ventas por mes",
+  "Sales by country": "Ventas por país",
+  "Top countries": "Principales países",
+  "Top customers": "Principales clientes",
+  "No sales in this period": "No hay ventas en este período",
+  "No country set": "Sin país",
+  "No sales": "Sin ventas",
+  "Month": "Mes"
 }

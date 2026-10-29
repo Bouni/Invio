@@ -347,5 +347,16 @@
   "e.g. INV-2025-001": "bijv. INV-2025-001",
   "e.g. US, NL, DE": "bijv. NL, BE, DE",
   "item(s)": "item(s)",
-  "or": "of"
+  "or": "of",
+  "Year": "Jaar",
+  "All time": "Altijd",
+  "Sales": "Verkopen",
+  "Sales per month": "Verkopen per maand",
+  "Sales by country": "Verkopen per land",
+  "Top countries": "Toplanden",
+  "Top customers": "Topklanten",
+  "No sales in this period": "Geen verkopen in deze periode",
+  "No country set": "Geen land ingesteld",
+  "No sales": "Geen verkopen",
+  "Month": "Maand"
 }

@@ -347,5 +347,16 @@
   "e.g. INV-2025-001": "z. B. RE-2025-001",
   "e.g. US, NL, DE": "z. B. DE, AT, CH",
   "item(s)": "Position(en)",
-  "or": "oder"
+  "or": "oder",
+  "Year": "Jahr",
+  "All time": "Gesamter Zeitraum",
+  "Sales": "Umsatz",
+  "Sales per month": "Umsatz pro Monat",
+  "Sales by country": "Umsatz nach Land",
+  "Top countries": "Top-Länder",
+  "Top customers": "Top-Kunden",
+  "No sales in this period": "Keine Umsätze in diesem Zeitraum",
+  "No country set": "Kein Land angegeben",
+  "No sales": "Keine Umsätze",
+  "Month": "Monat"
 }

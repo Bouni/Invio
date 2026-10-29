@@ -294,5 +294,16 @@
   "e.g. INV-2025-001": "напр. INV-2025-001",
   "e.g. US, NL, DE": "напр. US, NL, DE",
   "item(s)": "артикул(и)",
-  "Español (Argentina)": "Español (Argentina)"
+  "Español (Argentina)": "Español (Argentina)",
+  "Year": "Година",
+  "All time": "За целия период",
+  "Sales": "Продажби",
+  "Sales per month": "Продажби по месеци",
+  "Sales by country": "Продажби по държави",
+  "Top countries": "Топ държави",
+  "Top customers": "Топ клиенти",
+  "No sales in this period": "Няма продажби за този период",
+  "No country set": "Няма зададена държава",
+  "No sales": "Няма продажби",
+  "Month": "Месец"
 }

@@ -347,5 +347,16 @@
   "e.g. INV-2025-001": "e.g. INV-2025-001",
   "e.g. US, NL, DE": "e.g. US, NL, DE",
   "item(s)": "item(s)",
-  "or": "or"
+  "or": "or",
+  "Year": "Year",
+  "All time": "All time",
+  "Sales": "Sales",
+  "Sales per month": "Sales per month",
+  "Sales by country": "Sales by country",
+  "Top countries": "Top countries",
+  "Top customers": "Top customers",
+  "No sales in this period": "No sales in this period",
+  "No country set": "No country set",
+  "No sales": "No sales",
+  "Month": "Month"
 }
